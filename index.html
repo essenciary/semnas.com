@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Semnas is an AI read-later app. Save an article and get a summary, key points, an audio version and answers to your questions.">
+<meta name="theme-color" content="#F3F2EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#17171A" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="canonical" href="https://semnas.com/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://semnas.com/">
+<meta property="og:title" content="Semnas — Don’t just bookmark it. Understand it.">
+<meta property="og:description" content="An AI read-later app: summaries, key points, audio and answers for everything you save.">
+<meta property="og:image" content="https://semnas.com/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>Semnas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+/* Layout: one reading column set like a saved article, screenshots breaking out wide, a plum ribbon hanging from the top edge */
+:root{
+  --paper:#F3F2EE; --ink:#17171A; --plum:#7A2748; --hair:#E0DED6;
+  --bg:var(--paper); --fg:var(--ink); --muted:#5E5C58; --surface:#FBFAF7;
+  --accent:var(--plum); --mark:var(--plum); --ribbon:var(--plum); --ribbon-fg:var(--paper);
+  --shadow:0 1px 2px rgba(23,23,26,.06),0 12px 32px -12px rgba(23,23,26,.18);
+  --sans:"Familjen Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Source Serif 4",Charter,"Iowan Old Style",Georgia,serif;
+  --measure:38rem; --wide:68rem;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#17171A; --fg:#F3F2EE; --muted:#A7A49D; --surface:#1F1F23; --hair:#2E2D31;
+  --accent:#D995B0; --mark:#F3F2EE; --ribbon:#7A2748; --ribbon-fg:#F3F2EE;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px -12px rgba(0,0,0,.6); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17171A; --fg:#F3F2EE; --muted:#A7A49D; --surface:#1F1F23; --hair:#2E2D31;
+  --accent:#D995B0; --mark:#F3F2EE; --ribbon:#7A2748; --ribbon-fg:#F3F2EE;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px -12px rgba(0,0,0,.6); color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 1.0625rem/1.6 var(--sans);padding-inline:clamp(16px,5vw,48px);padding-block:0}
+a{color:inherit;text-decoration-color:color-mix(in srgb,currentColor 35%,transparent);text-underline-offset:.2em}
+a:hover{text-decoration-color:currentColor}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+img{max-width:100%;height:auto;display:block}
+.wrap{max-width:var(--wide);margin-inline:auto;position:relative}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:1.75rem;padding-right:calc(clamp(0px,6vw,64px) + 64px)}
+.lockup{height:28px;width:auto;color:var(--fg);display:block}
+svg .m{fill:var(--mark)}
+.status{font:500 .8125rem/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+/* ribbon: the logo's notched terminal, hung from the page edge like a book ribbon */
+.ribbon{position:absolute;top:0;right:clamp(0px,6vw,64px);width:44px;height:132px;background:var(--ribbon);
+  clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%);transform-origin:top;animation:drop .9s cubic-bezier(.2,.8,.2,1) both .15s}
+@keyframes drop{from{transform:scaleY(.35)}to{transform:scaleY(1)}}
+@media (prefers-reduced-motion:reduce){.ribbon{animation:none}}
+.hero{padding-block:clamp(3rem,9vw,7rem) clamp(2.5rem,6vw,4.5rem);max-width:46rem}
+.eyebrow{font:600 .8125rem/1.2 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 1.25rem}
+h1{font:600 clamp(2.6rem,7vw,4.9rem)/.98 var(--sans);letter-spacing:-.035em;margin:0 0 1.75rem;text-wrap:balance}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{font:400 clamp(1.15rem,2.2vw,1.35rem)/1.55 var(--serif);max-width:var(--measure);margin:0;color:var(--fg)}
+.meta{display:flex;flex-wrap:wrap;gap:.35rem 1rem;margin-top:2rem;font-size:.875rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.meta span+span::before{content:"·";margin-right:1rem;color:var(--hair)}
+.shot{margin:0;border-radius:10px;overflow:hidden;border:1px solid var(--hair);box-shadow:var(--shadow);background:var(--surface)}
+.shot a{display:block}
+.hero-shot{margin-bottom:clamp(4rem,10vw,7.5rem)}
+.features{display:grid;gap:clamp(4rem,9vw,6.5rem);padding-bottom:clamp(4rem,9vw,7rem)}
+.feature{display:grid;grid-template-columns:minmax(0,19rem) minmax(0,1fr);gap:clamp(1.5rem,4vw,3.5rem);align-items:start}
+.feature .text{min-width:0;padding-top:.5rem}
+.feature h2{font:600 clamp(1.5rem,2.6vw,1.9rem)/1.15 var(--sans);letter-spacing:-.02em;margin:.35rem 0 .9rem;text-wrap:balance}
+.feature p{font:400 1.0625rem/1.6 var(--serif);margin:0;color:var(--fg)}
+.tag{font:600 .75rem/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.more{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:2.5rem 3rem;border-top:1px solid var(--hair);padding-block:3.5rem clamp(4rem,9vw,6rem)}
+.more h3{font:600 1.15rem/1.25 var(--sans);margin:.5rem 0 .5rem}
+.more p{font:400 1rem/1.6 var(--serif);margin:0;color:var(--muted)}
+.close{border-top:1px solid var(--hair);padding-block:clamp(3.5rem,8vw,5.5rem);display:flex;flex-wrap:wrap;gap:1.5rem 3rem;align-items:end;justify-content:space-between}
+.close p.big{font:600 clamp(1.8rem,4vw,2.7rem)/1.05 var(--sans);letter-spacing:-.025em;margin:0;max-width:30rem;text-wrap:balance}
+.close p.small{margin:0;max-width:24rem;font:400 1rem/1.6 var(--serif);color:var(--muted)}
+footer{border-top:1px solid var(--hair);padding-block:1.75rem 2.5rem;display:flex;flex-wrap:wrap;gap:.5rem 2rem;justify-content:space-between;font-size:.875rem;color:var(--muted)}
+footer svg{height:18px;width:auto;flex:none}
+footer .mk{display:flex;align-items:center;gap:.6rem}
+@media (max-width:760px){.feature{grid-template-columns:minmax(0,1fr)}.ribbon{width:34px;height:96px}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <div class="ribbon" aria-hidden="true"></div>
+  <header class="top">
+    <a href="/" aria-label="semnas home"><svg class="lockup" viewBox="0 0 434.83 76" role="img" aria-label="semnas"><g transform="translate(-14 -12)"><path class="m" d="M14 12 H86 L76 21 L86 30 H32 V41 H86 V88 H14 L24 79 L14 70 H68 V59 H14 Z"/></g><g transform="translate(114.08 63.00)"><path d="M24.50 1.25Q16.50 1.25 11.67 -1.33Q6.83 -3.92 4.54 -7.92Q2.25 -11.92 2.00 -16.00H13.83Q14.17 -13.75 15.54 -11.83Q16.92 -9.92 19.29 -8.79Q21.67 -7.67 25.08 -7.67Q29.17 -7.67 31.08 -9.17Q33.00 -10.67 33.00 -13.00Q33.00 -15.17 31.33 -16.67Q29.67 -18.17 25.92 -19.42L19.92 -21.42Q15.67 -22.92 12.12 -24.71Q8.58 -26.50 6.46 -29.33Q4.33 -32.17 4.33 -36.58Q4.33 -43.17 9.29 -47.21Q14.25 -51.25 23.25 -51.25Q29.75 -51.25 33.92 -49.21Q38.08 -47.17 40.21 -43.71Q42.33 -40.25 42.67 -36.00H31.25Q30.83 -39.08 28.75 -40.92Q26.67 -42.75 22.75 -42.75Q19.33 -42.75 17.58 -41.38Q15.83 -40.00 15.83 -37.67Q15.83 -35.33 17.67 -33.83Q19.50 -32.33 23.17 -31.08L29.17 -29.08Q33.42 -27.75 36.92 -25.96Q40.42 -24.17 42.50 -21.33Q44.58 -18.50 44.58 -14.00Q44.58 -7.17 39.42 -2.96Q34.25 1.25 24.50 1.25ZM69.75 1.25Q58.17 1.25 52.08 -5.88Q46.00 -13.00 46.00 -25.08Q46.00 -33.17 48.71 -39.00Q51.42 -44.83 56.71 -48.04Q62.00 -51.25 69.67 -51.25Q80.58 -51.25 86.38 -44.54Q92.17 -37.83 92.17 -24.83V-22.08H58.08Q58.50 -15.50 61.50 -11.58Q64.50 -7.67 69.83 -7.67Q73.92 -7.67 76.42 -10.08Q78.92 -12.50 79.83 -16.00H91.58Q90.75 -11.33 88.17 -7.42Q85.58 -3.50 81.04 -1.12Q76.50 1.25 69.75 1.25ZM58.08 -30.08H80.17Q79.83 -36.08 77.12 -39.42Q74.42 -42.75 69.58 -42.75Q64.67 -42.75 61.71 -39.54Q58.75 -36.33 58.08 -30.08ZM97.42 0.00V-50.00H108.83V-42.50H110.83Q112.17 -46.25 115.29 -48.75Q118.42 -51.25 124.08 -51.25Q129.33 -51.25 132.75 -48.96Q136.17 -46.67 138.00 -42.50H140.00Q141.42 -46.33 144.67 -48.79Q147.92 -51.25 153.42 -51.25Q161.58 -51.25 165.50 -45.96Q169.42 -40.67 169.42 -31.83V0.00H157.08V-29.67Q157.08 -35.08 155.29 -38.08Q153.50 -41.08 149.58 -41.08Q144.75 -41.08 142.17 -37.00Q139.58 -32.92 139.58 -27.00V0.00H127.25V-29.67Q127.25 -35.08 125.46 -38.08Q123.67 -41.08 119.75 -41.08Q115.00 -41.08 112.42 -37.00Q109.83 -32.92 109.83 -27.00V0.00ZM177.58 0.00V-50.00H189.00V-42.50H191.00Q192.42 -46.33 195.67 -48.79Q198.92 -51.25 204.83 -51.25Q213.25 -51.25 217.38 -45.96Q221.50 -40.67 221.50 -31.83V0.00H209.08V-29.67Q209.08 -35.17 207.12 -38.12Q205.17 -41.08 200.83 -41.08Q195.67 -41.08 192.83 -37.04Q190.00 -33.00 190.00 -27.00V0.00ZM246.58 1.08Q239.75 1.08 235.25 -2.29Q230.75 -5.67 228.54 -11.54Q226.33 -17.42 226.33 -25.08Q226.33 -32.92 228.58 -38.75Q230.83 -44.58 235.33 -47.83Q239.83 -51.08 246.58 -51.08Q251.92 -51.08 255.29 -48.96Q258.67 -46.83 260.33 -43.50H262.33V-50.00H273.75V0.00H262.33V-6.50H260.33Q258.67 -3.42 255.33 -1.17Q252.00 1.08 246.58 1.08ZM249.67 -7.92Q255.00 -7.92 258.21 -12.58Q261.42 -17.25 261.42 -25.00Q261.42 -32.83 258.21 -37.46Q255.00 -42.08 249.67 -42.08Q244.67 -42.08 241.88 -37.75Q239.08 -33.42 239.08 -25.00Q239.08 -16.58 241.88 -12.25Q244.67 -7.92 249.67 -7.92ZM300.67 1.25Q292.67 1.25 287.83 -1.33Q283.00 -3.92 280.71 -7.92Q278.42 -11.92 278.17 -16.00H290.00Q290.33 -13.75 291.71 -11.83Q293.08 -9.92 295.46 -8.79Q297.83 -7.67 301.25 -7.67Q305.33 -7.67 307.25 -9.17Q309.17 -10.67 309.17 -13.00Q309.17 -15.17 307.50 -16.67Q305.83 -18.17 302.08 -19.42L296.08 -21.42Q291.83 -22.92 288.29 -24.71Q284.75 -26.50 282.62 -29.33Q280.50 -32.17 280.50 -36.58Q280.50 -43.17 285.46 -47.21Q290.42 -51.25 299.42 -51.25Q305.92 -51.25 310.08 -49.21Q314.25 -47.17 316.38 -43.71Q318.50 -40.25 318.83 -36.00H307.42Q307.00 -39.08 304.92 -40.92Q302.83 -42.75 298.92 -42.75Q295.50 -42.75 293.75 -41.38Q292.00 -40.00 292.00 -37.67Q292.00 -35.33 293.83 -33.83Q295.67 -32.33 299.33 -31.08L305.33 -29.08Q309.58 -27.75 313.08 -25.96Q316.58 -24.17 318.67 -21.33Q320.75 -18.50 320.75 -14.00Q320.75 -7.17 315.58 -2.96Q310.42 1.25 300.67 1.25Z" fill="currentColor"/></g></svg></a>
+    <span class="status">Coming soon</span>
+  </header>
+
+  <section class="hero">
+    <p class="eyebrow">An AI read-later app</p>
+    <h1>Don’t just bookmark it. <em>Understand it.</em></h1>
+    <p class="lede">Save an article and Semnas reads it with you. You get a summary, the key points, an audio version you can listen to, and answers when you ask it questions. The more you read, the better it knows what to put in front of you next.</p>
+    <div class="meta"><span>Summary</span><span>Key points</span><span>Audio</span><span>Ask</span><span>Discover</span></div>
+  </section>
+
+  <figure class="shot hero-shot"><a href="img/screen-1-full.webp" target="_blank" rel="noopener"><img src="img/screen-1.webp" width="1200" height="800" alt="The Semnas library: an inbox of 847 saved articles with filters for unread, reading, starred and archive"></a></figure>
+
+  <div class="features">
+    <article class="feature">
+      <div class="text"><span class="tag">Brief</span><h2>The unread pile, one summary at a time</h2><p>Brief turns the backlog into a short queue. Listen or skim, mark it and move on, and star the few worth reading properly.</p></div>
+      <figure class="shot"><a href="img/screen-2-full.webp" target="_blank" rel="noopener"><img src="img/screen-2.webp" width="1200" height="800" loading="lazy" alt="Brief: a single article summary card with source, reading time and overview"></a></figure>
+    </article>
+    <article class="feature">
+      <div class="text"><span class="tag">Reader</span><h2>A summary on top, and an audio version to play</h2><p>Every saved article opens with an overview and a narrated version, so an 8-minute read can be a 90-second listen when that is all you have.</p></div>
+      <figure class="shot"><a href="img/screen-3-full.webp" target="_blank" rel="noopener"><img src="img/screen-3.webp" width="1200" height="800" loading="lazy" alt="The reader with tags, an audio player and an AI overview above the article"></a></figure>
+    </article>
+    <article class="feature">
+      <div class="text"><span class="tag">Margin</span><h2>Key points written beside the passage</h2><p>Summarize a section, pull out its key points, check its reading level or add your own note. It all sits in the margin next to the text it came from.</p></div>
+      <figure class="shot"><a href="img/screen-4-full.webp" target="_blank" rel="noopener"><img src="img/screen-4.webp" width="1200" height="759" loading="lazy" alt="Margin actions beside a paragraph: summarize, key point, reading level, questions and note"></a></figure>
+    </article>
+    <article class="feature">
+      <div class="text"><span class="tag">Ask</span><h2>Ask the article what it means</h2><p>Ask about the whole piece or only the passages you selected, and get an answer grounded in the text in front of you.</p></div>
+      <figure class="shot"><a href="img/screen-5-full.webp" target="_blank" rel="noopener"><img src="img/screen-5.webp" width="1200" height="801" loading="lazy" alt="Asking a question about two selected passages and reading the answer"></a></figure>
+    </article>
+    <article class="feature">
+      <div class="text"><span class="tag">Reading view</span><h2>Clean pages, diagrams kept</h2><p>Articles come in without the clutter. Figures, diagrams and code stay where the author put them.</p></div>
+      <figure class="shot"><a href="img/screen-6-full.webp" target="_blank" rel="noopener"><img src="img/screen-6.webp" width="1200" height="801" loading="lazy" alt="Reading view of an article with a design-process diagram"></a></figure>
+    </article>
+  </div>
+
+  <section class="more" aria-label="Also in Semnas">
+    <div><span class="tag">Discover</span><h3>A feed that learns from what you finish</h3><p>A recommender learns from what you read and fills Discover and your daily Brief with more of the good kind.</p></div>
+    <div><span class="tag">Save</span><h3>Save from any browser</h3><p>An extension for Chrome, Edge and Safari captures the page as you see it, including pages behind a login.</p></div>
+    <div><span class="tag">Find</span><h3>Search everything you kept</h3><p>Articles, highlights and notes are all searchable, so the thing you read in March is still there when you need it.</p></div>
+  </section>
+
+  <section class="close">
+    <p class="big">Semnas is in private beta.</p>
+    <p class="small">We are reading with it every day and opening it up soon. Check back here for the launch.</p>
+  </section>
+
+  <footer>
+    <span class="mk"><svg viewBox="0 0 72 76" aria-hidden="true"><path transform="translate(-14 -12)" d="M14 12 H86 L76 21 L86 30 H32 V41 H86 V88 H14 L24 79 L14 70 H68 V59 H14 Z" class="m"/></svg>© 2026 Semnas</span>
+    <span>Built with <a href="https://opentide.ai" target="_blank" rel="noopener">OpenTide</a> by <a href="https://essenciary.com" target="_blank" rel="noopener">Essenciary</a></span>
+  </footer>
+</div>
+</body>
+</html>
