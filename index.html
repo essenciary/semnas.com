@@ -77,7 +77,7 @@
   --shadow:0 1px 2px rgba(23,23,26,.06),0 12px 32px -12px rgba(23,23,26,.18);
   --sans:"Familjen Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
   --serif:"Source Serif 4",Charter,"Iowan Old Style",Georgia,serif;
-  --measure:38rem; --wide:76rem;
+  --measure:38rem; --wide:52rem;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#17171A; --fg:#F3F2EE; --muted:#A7A49D; --surface:#1F1F23; --hair:#2E2D31;
@@ -115,7 +115,7 @@ h1 em{font-style:normal;color:var(--accent)}
 .shot{margin:0;border-radius:10px;overflow:hidden;border:1px solid var(--hair);box-shadow:var(--shadow);background:var(--surface)}
 .hero-shot{margin-bottom:clamp(4rem,10vw,7.5rem)}
 .features{display:grid;gap:clamp(4rem,9vw,6.5rem);padding-bottom:clamp(4rem,9vw,7rem)}
-.feature{display:grid;grid-template-columns:minmax(0,17rem) minmax(0,1fr);gap:clamp(1.5rem,4vw,3.5rem);align-items:start}
+.feature{display:grid;grid-template-columns:minmax(0,15.5rem) minmax(0,1fr);gap:clamp(1.5rem,3vw,2.75rem);align-items:start}
 .feature .text{min-width:0;padding-top:.5rem}
 .feature h2{font:600 clamp(1.5rem,2.6vw,1.9rem)/1.15 var(--sans);letter-spacing:-.02em;margin:.35rem 0 .9rem;text-wrap:balance}
 .feature p{font:400 1.0625rem/1.6 var(--serif);margin:0;color:var(--fg)}
@@ -130,11 +130,10 @@ footer{border-top:1px solid var(--hair);padding-block:1.75rem 2.5rem;display:fle
 footer svg{height:18px;width:auto;flex:none}
 footer .mk{display:flex;align-items:center;gap:.6rem}
 @media (max-width:760px){.feature{grid-template-columns:minmax(0,1fr)}.ribbon{width:34px;height:96px}}
-.shot{cursor:zoom-in;width:fit-content;max-width:100%}
+.shot{cursor:zoom-in;width:100%}
 .shot:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
-.shot img{max-height:min(86vh,62rem);width:auto}
+.shot img{width:100%}
 
-@media (max-width:760px){.shot img{max-height:none;width:100%}}
 .lb{position:fixed;inset:0;z-index:50;background:rgba(23,23,26,.92);display:flex;align-items:center;justify-content:center;padding:max(24px,env(safe-area-inset-top,0px)) 16px max(24px,env(safe-area-inset-bottom,0px));overflow:auto;cursor:zoom-out}
 .lb img{max-height:100%;width:auto;max-width:min(1600px,100%);border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.5);margin:auto;cursor:default}
 .lb button{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:16px;width:42px;height:42px;border-radius:50%;border:0;background:#F3F2EE;color:#17171A;font:600 18px/1 var(--sans);cursor:pointer}
